@@ -1,7 +1,12 @@
 import React from 'react';
 import { StatusBar, StyleSheet, Text, View, Image, TouchableHighlight } from 'react-native';
+// import Video from 'react-native-video';
 
 export default class App extends React.Component {
+  _refreshImage() {
+
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -22,6 +27,7 @@ class ImageBox extends React.Component {
     super()
     this.state = {
       imageURL: '',
+      fileType: '',
       isLoading: true
     }
   }
@@ -30,9 +36,10 @@ class ImageBox extends React.Component {
     fetch('http://192.168.1.116:4567/image.json')
       .then((response) => response.json())
       .then((responseJson) => {
-        // console.log(responseJson)
+        console.log(responseJson)
         this.setState({
           imageURL: responseJson.video,
+          fileType: responseJson.fileType,
           isLoading: false
         })
       })
@@ -50,7 +57,13 @@ class ImageBox extends React.Component {
     if(this.state.isLoading) {
       return <Text>Loading...</Text>
     } else {
-      return <Image style={styles.image} source={{uri: this.state.imageURL}} />
+      if(this.state.fileType == ".gif") {
+        return <Image style={styles.image} source={{uri: this.state.imageURL}} />
+      }
+      // else if(this.state.fileType == ".mp4") {
+      //   console.log(this.state.imageURL)
+      //   return <Video source={{uri: this.state.imageURL}} />
+      // }
     }
   }
 
